@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const clientId = 'client_id_mcjustin';
-    const fhirUrl = 'https://launch.smarthealthit.org/v/r4/sim/WzMsIiIsIiIsIkFVVE8iLDAsMCwwLCIiLCIiLCJjbGllbnRfaWRfbWNqdXN0aW4iLCIiLCIiLCIiLCIiLDAsMV0/fhir';
+    const fhirUrl = 'https://launch.smarthealthit.org/v/r4/sim/WzMsIiIsIiIsIkFVVE8iLDAsMCwwLCIiLCIiLCIiLCIiLCIiLCIiLCIiLDAsMF0/fhir';
 
     const config = {
         clientId,
