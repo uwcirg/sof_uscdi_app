@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const clientId = 'your-client-id';
-    const fhirUrl = 'https://fhir.epic.com/your-fhir-server-url';
+    const clientId = 'client_id_mcjustin';
+    const fhirUrl = 'https://launch.smarthealthit.org/v/r4/sim/WzMsIiIsIiIsIkFVVE8iLDAsMCwwLCIiLCIiLCJjbGllbnRfaWRfbWNqdXN0aW4iLCIiLCIiLCIiLCIiLDAsMV0/fhir';
 
     const config = {
         clientId,
