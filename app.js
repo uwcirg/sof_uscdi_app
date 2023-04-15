@@ -19,7 +19,8 @@ function startApp() {
     };
 
     FHIR.oauth2.authorize(config);
-
+}
+    
 FHIR.oauth2.ready().then(client => {
     const patientInfo = document.getElementById('patient-info');
     const immunizationHistory = document.getElementById('immunization-history');
