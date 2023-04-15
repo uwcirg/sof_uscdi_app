@@ -1,4 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    const startButton = document.createElement('button');
+    startButton.textContent = 'Start';
+    startButton.onclick = startApp;
+    document.body.appendChild(startButton);
+});
+
+function startApp() {
+    
     const clientId = 'client_id_mcjustin';
     const fhirUrl = 'https://launch.smarthealthit.org/v/r4/sim/WzMsIiIsIiIsIkFVVE8iLDAsMCwwLCIiLCIiLCIiLCIiLCIiLCIiLCIiLDAsMF0/fhir';
 
