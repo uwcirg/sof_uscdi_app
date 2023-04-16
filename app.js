@@ -12,7 +12,9 @@ const startApp = () => {
     FHIR.oauth2.authorize(config);
 };
 
-document.getElementById('start-app-button').addEventListener('click', startApp);
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('start-app-button').addEventListener('click', startApp);
+});
 
 FHIR.oauth2.init({
     client_id: 'client_id_mcjustin',
