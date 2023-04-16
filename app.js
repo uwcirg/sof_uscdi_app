@@ -1,13 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
-
-    const startButton = document.createElement('button');
-    startButton.textContent = 'Start';
-    startButton.onclick = startApp;
-    document.body.appendChild(startButton);
-});
-
-function startApp() {
-    
+const startApp = () => {
     const clientId = 'client_id_mcjustin';
     const fhirUrl = 'https://launch.smarthealthit.org/v/r4/sim/WzMsIiIsIiIsIkFVVE8iLDAsMCwwLCIiLCIiLCIiLCIiLCIiLCIiLCIiLDAsMF0/fhir';
 
@@ -19,22 +10,25 @@ function startApp() {
     };
 
     FHIR.oauth2.authorize(config);
-}
-    
-FHIR.oauth2.ready().then(client => {
+};
+
+document.getElementById('start-app-button').addEventListener('click', startApp);
+
+FHIR.oauth2.init({
+    client_id: 'client_id_mcjustin',
+    scope: 'openid fhirUser launch/patient patient/Patient.read patient/Immunization.read',
+    redirect_uri: 'https://your-redirect-uri'
+}).then(client => {
     const patientInfo = document.getElementById('patient-info');
     const immunizationHistory = document.getElementById('immunization-history');
 
-    client.patient.read().then(patient => {
+    client.request('Patient/' + client.getPatientId()).then(patient => {
         const name = patient.name[0];
         const formattedName = `${name.given.join(' ')} ${name.family}`;
         patientInfo.innerHTML = `<h2>Patient Name: ${formattedName}</h2>`;
     });
 
-    const immunizationQuery = new URLSearchParams();
-    immunizationQuery.set('patient', client.patient.id);
-
-    client.request(`Immunization?${immunizationQuery}`, {flat: true}).then(immunizations => {
+    client.request(`Immunization?patient=${client.getPatientId()}`, { flat: true }).then(immunizations => {
         immunizationHistory.innerHTML = '<h2>Immunization History:</h2>';
         const list = document.createElement('ul');
 
