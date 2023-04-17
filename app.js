@@ -10,7 +10,10 @@ const startApp = () => {
         redirect_uri: 'index.html'
     };
 
-    FHIR.oauth2.init(config).then(client => {
+    FHIR.oauth2.authorize(config);
+};
+
+FHIR.oauth2.ready().then(client => {
     const patientInfo = document.getElementById('patient-info');
     const immunizationHistory = document.getElementById('immunization-history');
 
@@ -33,7 +36,6 @@ const startApp = () => {
         immunizationHistory.appendChild(list);
     });
 }).catch(console.error);
-};
 
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('start-app-button').addEventListener('click', startApp);
