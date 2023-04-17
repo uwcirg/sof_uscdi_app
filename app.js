@@ -1,10 +1,18 @@
 const startApp = () => {
-    //const clientId = 'client_id_mcjustin';
-    const clientId = 'c916889f-4e33-4dfa-980d-966ba49315f3';
-    //const fhirUrl = 'https://launch.smarthealthit.org/v/r4/sim/WzMsIiIsIiIsIkFVVE8iLDAsMCwwLCIiLCIiLCIiLCIiLCIiLCIiLCIiLDAsMF0/fhir';
+
+    const fhirUrls = {
+        smit: 'https://launch.smarthealthit.org/v/r4/sim/WzMsIiIsIiIsIkFVVE8iLDAsMCwwLCIiLCIiLCIiLCIiLCIiLCIiLCIiLDAsMF0/fhir',
+        epic: 'https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4' // per https://open.epic.com/MyApps/Endpoints
+    };
+    const urlParams = new URLSearchParams(window.location.search);
+    const sofHost = urlParams.get('sof_host') || 'smit';
+    // Select the FHIR URL from the lookup table based on the 'sof_host' parameter
+    const fhirUrl = fhirUrls[sofHost];
     //const fhirUrl = 'https://vendorservices.epic.com/interconnect-amcurprd-oauth/oauth2/authorize';
     //const fhirUrl = 'https://appmarket.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4'; // per https://vendorservices.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4/metadata and earlier testing.
-    const fhirUrl = 'https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4'; // per https://open.epic.com/MyApps/Endpoints
+        
+    //const clientId = 'client_id_mcjustin';
+    const clientId = 'c916889f-4e33-4dfa-980d-966ba49315f3';
 
     const config = {
         clientId,
