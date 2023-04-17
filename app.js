@@ -4,23 +4,13 @@ const startApp = () => {
 
     const config = {
         clientId,
-        scope: 'openid fhirUser launch/patient patient/Patient.read patient/Immunization.read',
+        scope: 'openid fhirUser launch/patient patient/Patient.read patient/Immunization.read offline_access',
         iss: fhirUrl,
         completeInTarget: true,
+        redirect_uri: 'index.html'
     };
 
-    FHIR.oauth2.authorize(config);
-};
-
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('start-app-button').addEventListener('click', startApp);
-});
-
-FHIR.oauth2.init({
-    client_id: 'client_id_mcjustin',
-    scope: 'openid fhirUser launch/patient patient/Patient.read patient/Immunization.read',
-    redirect_uri: 'https://your-redirect-uri'
-}).then(client => {
+    FHIR.oauth2.init(config).then(client => {
     const patientInfo = document.getElementById('patient-info');
     const immunizationHistory = document.getElementById('immunization-history');
 
@@ -43,3 +33,8 @@ FHIR.oauth2.init({
         immunizationHistory.appendChild(list);
     });
 }).catch(console.error);
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('start-app-button').addEventListener('click', startApp);
+});
