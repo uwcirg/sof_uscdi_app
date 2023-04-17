@@ -3,8 +3,9 @@ const startApp = () => {
     const clientId = 'c916889f-4e33-4dfa-980d-966ba49315f3';
     //const fhirUrl = 'https://launch.smarthealthit.org/v/r4/sim/WzMsIiIsIiIsIkFVVE8iLDAsMCwwLCIiLCIiLCIiLCIiLCIiLCIiLCIiLDAsMF0/fhir';
     //const fhirUrl = 'https://vendorservices.epic.com/interconnect-amcurprd-oauth/oauth2/authorize';
-    const fhirUrl = 'https://appmarket.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4'; // per https://vendorservices.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4/metadata and earlier testing.
-    
+    //const fhirUrl = 'https://appmarket.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4'; // per https://vendorservices.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4/metadata and earlier testing.
+    const fhirUrl = 'https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4'; // per https://open.epic.com/MyApps/Endpoints
+
     const config = {
         clientId,
         scope: 'openid fhirUser launch/patient patient/Patient.read patient/Immunization.read offline_access',
