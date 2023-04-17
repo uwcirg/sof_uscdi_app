@@ -50,7 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
     //const fhirUrl = 'https://vendorservices.epic.com/interconnect-amcurprd-oauth/oauth2/authorize';
     //const fhirUrl = 'https://appmarket.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4'; // per https://vendorservices.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4/metadata and earlier testing.
     const immunizationHistory = document.getElementById('sof_host_info');
-    immunizationHistory.appendChild("FHIR server: " + fhirUrl);
+    const fhirUrlToDisplay = document.createElement('p');
+    fhirUrlToDisplay.textContent = "FHIR server: " + fhirUrl;
+    immunizationHistory.appendChild(fhirUrlToDisplay);
             
     //const clientId = 'client_id_mcjustin';
     const clientId = 'c916889f-4e33-4dfa-980d-966ba49315f3';
