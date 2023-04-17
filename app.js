@@ -1,3 +1,5 @@
+const config;
+
 const startApp = () => {
 
     FHIR.oauth2.authorize(config);
@@ -57,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //const clientId = 'client_id_mcjustin';
     const clientId = 'c916889f-4e33-4dfa-980d-966ba49315f3';
 
-    const config = {
+    config = {
         clientId,
         scope: 'openid fhirUser launch/patient patient/Patient.read patient/Immunization.read offline_access',
         iss: fhirUrl,
