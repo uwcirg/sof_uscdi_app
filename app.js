@@ -36,7 +36,8 @@ FHIR.oauth2.ready().then(client => {
 
         immunizations.forEach(immunization => {
             const listItem = document.createElement('li');
-            const displayText = immunization.vaccineCode.coding[0].display ? immunization.vaccineCode.coding[0].display : immunization.vaccineCode.text;
+            //const displayText = immunization.vaccineCode.coding[0].display ? immunization.vaccineCode.coding[0].display : immunization.vaccineCode.text;
+            const displayText = immunization.vaccineCode.coding[0].display === undefined ? immunization.vaccineCode.text : immunization.vaccineCode.coding[0].display;
             listItem.textContent = `${displayText} - ${immunization.occurrenceDateTime}`;
             list.appendChild(listItem);
         });
