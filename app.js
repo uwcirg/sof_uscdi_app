@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sofHost = urlParams.get('sof_host') || 'smit';
     // Select the FHIR URL from the lookup table based on the 'sof_host' parameter
     const fhirUrl = fhirUrls[sofHost];
+    config.redirect_uri = 'index.html?sof_host=' + sofHost;
     //const fhirUrl = 'https://vendorservices.epic.com/interconnect-amcurprd-oauth/oauth2/authorize';
     //const fhirUrl = 'https://appmarket.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4'; // per https://vendorservices.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4/metadata and earlier testing.
     config.iss = fhirUrl;
