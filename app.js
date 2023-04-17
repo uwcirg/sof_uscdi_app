@@ -1,5 +1,11 @@
-const config;
-
+const config = {
+        clientId: 'c916889f-4e33-4dfa-980d-966ba49315f3',
+        scope: 'openid fhirUser launch/patient patient/Patient.read patient/Immunization.read offline_access',
+        iss: '(populated later)',
+        completeInTarget: true,
+        redirect_uri: 'index.html'
+    };
+    
 const startApp = () => {
 
     FHIR.oauth2.authorize(config);
@@ -51,20 +57,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const fhirUrl = fhirUrls[sofHost];
     //const fhirUrl = 'https://vendorservices.epic.com/interconnect-amcurprd-oauth/oauth2/authorize';
     //const fhirUrl = 'https://appmarket.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4'; // per https://vendorservices.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4/metadata and earlier testing.
+    config.iss = fhirUrl;
+    
     const immunizationHistory = document.getElementById('sof_host_info');
     const fhirUrlToDisplay = document.createElement('p');
     fhirUrlToDisplay.textContent = "FHIR server: " + fhirUrl;
     immunizationHistory.appendChild(fhirUrlToDisplay);
-            
-    //const clientId = 'client_id_mcjustin';
-    const clientId = 'c916889f-4e33-4dfa-980d-966ba49315f3';
 
-    config = {
-        clientId,
-        scope: 'openid fhirUser launch/patient patient/Patient.read patient/Immunization.read offline_access',
-        iss: fhirUrl,
-        completeInTarget: true,
-        redirect_uri: 'index.html'
-    };
-    
 });
