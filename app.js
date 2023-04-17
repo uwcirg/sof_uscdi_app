@@ -1,7 +1,9 @@
 const startApp = () => {
-    const clientId = 'client_id_mcjustin';
-    const fhirUrl = 'https://launch.smarthealthit.org/v/r4/sim/WzMsIiIsIiIsIkFVVE8iLDAsMCwwLCIiLCIiLCIiLCIiLCIiLCIiLCIiLDAsMF0/fhir';
-
+    //const clientId = 'client_id_mcjustin';
+    const clientId = 'c916889f-4e33-4dfa-980d-966ba49315f3';
+    //const fhirUrl = 'https://launch.smarthealthit.org/v/r4/sim/WzMsIiIsIiIsIkFVVE8iLDAsMCwwLCIiLCIiLCIiLCIiLCIiLCIiLCIiLDAsMF0/fhir';
+    const fhirUrl = 'https://vendorservices.epic.com/interconnect-amcurprd-oauth/oauth2/authorize';
+    
     const config = {
         clientId,
         scope: 'openid fhirUser launch/patient patient/Patient.read patient/Immunization.read offline_access',
