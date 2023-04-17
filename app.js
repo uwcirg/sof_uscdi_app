@@ -14,7 +14,7 @@ const startApp = () => {
 
 }; // const startApp
 
-if (sessionStorage.getItem('smartIdToken')) {
+if (sessionStorage.getItem('SMART_KEY')) {
 FHIR.oauth2.ready().then(client => {
     const patientInfo = document.getElementById('patient-info');
     const immunizationHistory = document.getElementById('immunization-history');
