@@ -34,14 +34,15 @@ FHIR.oauth2.ready().then(client => {
         immunizationHistory.innerHTML = '<h2>Immunization History:</h2>';
         const list = document.createElement('ul');
 
-        immunizations.forEach(immunization => {
-            if (immunization === undefined) break;
+        for (let i = 0; i < immunizations.length; i++) {
+            const immunization = immunizations[i];
+            if (immunization === undefined) continue;
             const listItem = document.createElement('li');
             //const displayText = immunization.vaccineCode.coding[0].display ? immunization.vaccineCode.coding[0].display : immunization.vaccineCode.text;
             const displayText = immunization.vaccineCode.coding[0].display === undefined ? immunization.vaccineCode.text : immunization.vaccineCode.coding[0].display;
             listItem.textContent = `${displayText} - ${immunization.occurrenceDateTime}`;
             list.appendChild(listItem);
-        });
+        }
 
         immunizationHistory.appendChild(list);
     });
