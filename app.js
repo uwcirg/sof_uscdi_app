@@ -14,6 +14,7 @@ const startApp = () => {
 
 }; // const startApp
 
+if (sessionStorage.getItem('smartIdToken')) {
 FHIR.oauth2.ready().then(client => {
     const patientInfo = document.getElementById('patient-info');
     const immunizationHistory = document.getElementById('immunization-history');
@@ -37,6 +38,8 @@ FHIR.oauth2.ready().then(client => {
         immunizationHistory.appendChild(list);
     });
 }).catch(console.error);
+    
+}
     
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('start-app-button').addEventListener('click', startApp);
