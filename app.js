@@ -36,7 +36,7 @@ FHIR.oauth2.ready().then(client => {
 
         for (let i = 0; i < immunizations.length; i++) {
             const immunization = immunizations[i];
-            if (immunization === undefined) continue;
+            if (immunization === undefined || immunization.resourceType != 'Immunization') continue;
             const listItem = document.createElement('li');
             //const displayText = immunization.vaccineCode.coding[0].display ? immunization.vaccineCode.coding[0].display : immunization.vaccineCode.text;
             const displayText = immunization.vaccineCode.coding[0].display === undefined ? immunization.vaccineCode.text : immunization.vaccineCode.coding[0].display;
