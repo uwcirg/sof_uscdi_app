@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMART on FHIR App</title>
+    <title>SMART on FHIR App Immunization viewer</title>
     <!-- script src="https://raw.githubusercontent.com/smart-on-fhir/client-js/master/dist/build/fhir-client.js"></script -->
     <!-- script src="fhir-client.js"></script -->
     <script src="https://cdn.jsdelivr.net/npm/fhirclient/build/fhir-client.js"></script>
@@ -11,6 +11,8 @@
 </head>
 <body>
     <h1>Patient Immunization History</h1>
+    <p>Use the "sof_host" URL parameter to specify either 'smit' (default) or 'epic'. This dictates which SoF endpoint is used; that's currently:</p>
+    <div id="sof_host_info"></div>
     <button id="start-app-button">Start App</button>
     <div id="patient-info"></div>
     <div id="immunization-history"></div>
