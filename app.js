@@ -11,7 +11,7 @@ const startApp = () => {
     };
 
     FHIR.oauth2.authorize(config);
-};
+
 
 FHIR.oauth2.ready().then(client => {
     const patientInfo = document.getElementById('patient-info');
@@ -37,6 +37,8 @@ FHIR.oauth2.ready().then(client => {
     });
 }).catch(console.error);
 
+    }; // const startApp
+    
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('start-app-button').addEventListener('click', startApp);
 });
