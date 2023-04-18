@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const startApp = () => {
     // At this point, the field has the user's desired host URL.
-    //const fhirBaseUrlInput = document.getElementById('fhir-base-url');
+    const fhirBaseUrlInput = document.getElementById('fhir-base-url');
     const inputFhirUrl = fhirBaseUrlInput.value.trim();
 
     if (!isValidUrl(inputFhirUrl)) {
