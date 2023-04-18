@@ -12,8 +12,12 @@
 <body>
     <h1>Patient Immunization History</h1>
     <p>This page can use a SMART on FHIR server of your choosing; enter it in the field below</p>
-    <p>Alternatively, use the "sof_host" URL parameter to specify either 'smit' (the default - https://launch.smarthealthit.org/v/r4/) or 'epic' (https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4).</p> 
-    
+    <p>Alternatively, use the "sof_host" URL parameter to specify either:</p> 
+    <ul>
+    <li>'smit' (the default) https://launch.smarthealthit.org/v/r4/ - Mr. Abdul Koepp has immunications (credentials pre-populated) </li>
+    or 
+    <li>'epic' https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4 - Desiree Powell has immunizations (credentials: fhirdesiree / epicepic1).</li> 
+    </ul>
     <label for="fhir-base-url">FHIR base URL (R4):</label>
     <input type="text" id="fhir-base-url" />
     <button id="start-app-button">Start App</button>
