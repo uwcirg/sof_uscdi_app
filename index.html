@@ -11,15 +11,13 @@
 </head>
 <body>
     <h1>Patient Immunization History</h1>
-    <p>This page can use a SMART on FHIR server of your choosing; enter it here:</p>
+    <p>This page can use a SMART on FHIR server of your choosing; enter it in the field below</p>
+    <p>Alternatively, use the "sof_host" URL parameter to specify either 'smit' (the default - https://launch.smarthealthit.org/v/r4/) or 'epic' (https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4).</p> 
+    
     <label for="fhir-base-url">FHIR base URL (R4):</label>
     <input type="text" id="fhir-base-url" />
-    <button id="validate-url-button">Validate</button>
-    <p>Alternatively, use the "sof_host" URL parameter to specify either 'smit' (the default - https://launch.smarthealthit.org/v/r4/) or 'epic' (https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4).</p> 
-    <br/>    
-    <p>The above dictates which SoF endpoint is used; that's currently:</p>
-    <div id="sof_host_info"></div>
     <button id="start-app-button">Start App</button>
+
     <div id="patient-info"></div>
     <div id="immunization-history"></div>
 </body>
