@@ -14,7 +14,7 @@ const startApp = () => {
 
 if (sessionStorage.getItem('SMART_KEY')) {
 FHIR.oauth2.ready().then(client => {
-    // "Abdul Koepp" has immunizations...
+    // For SMIT, "Abdul Koepp" has immunizations...
     const patientInfo = document.getElementById('patient-info');
     const immunizationHistory = document.getElementById('immunization-history');
 
@@ -52,10 +52,17 @@ document.addEventListener('DOMContentLoaded', () => {
         epic: 'https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4' // per https://open.epic.com/MyApps/Endpoints
     };
     const urlParams = new URLSearchParams(window.location.search);
-    const sofHost = urlParams.get('sof_host') || 'smit';
+    let sofHost = urlParams.get('sof_host');
+    if (sofHost) {
+        // Save 'sof_host' to a cookie if it exists
+        setCookie('sofHost', sofHost, 1);
+    } else {
+        // If 'sof_host' URL parameter doesn't exist, read it from the cookie
+        sofHost = getCookie('sofHost') || 'smit';
+    }
+
     // Select the FHIR URL from the lookup table based on the 'sof_host' parameter
     const fhirUrl = fhirUrls[sofHost];
-    config.redirect_uri = 'index.html?sof_host=' + sofHost;
     //const fhirUrl = 'https://vendorservices.epic.com/interconnect-amcurprd-oauth/oauth2/authorize';
     //const fhirUrl = 'https://appmarket.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4'; // per https://vendorservices.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4/metadata and earlier testing.
     config.iss = fhirUrl;
@@ -66,3 +73,29 @@ document.addEventListener('DOMContentLoaded', () => {
     immunizationHistory.appendChild(fhirUrlToDisplay);
 
 });
+
+// Utility function to set a cookie
+function setCookie(name, value, hours) {
+  const date = new Date();
+  date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
+  const expires = '; expires=' + date.toUTCString();
+  document.cookie = name + '=' + value + expires + '; path=/';
+}
+
+// Utility function to get a cookie
+function getCookie(name) {
+  const nameEQ = name + '=';
+  const cookies = document.cookie.split(';');
+
+  for (let i = 0; i < cookies.length; i++) {
+    let cookie = cookies[i];
+    while (cookie.charAt(0) === ' ') {
+      cookie = cookie.substring(1, cookie.length);
+    }
+    if (cookie.indexOf(nameEQ) === 0) {
+      return cookie.substring(nameEQ.length, cookie.length);
+    }
+  }
+
+  return null;
+}
