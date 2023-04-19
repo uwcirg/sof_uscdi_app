@@ -21,6 +21,12 @@
     <br/>
     <label for="fhir-base-url">FHIR base URL (R4):</label>
     <input type="text" id="fhir-base-url" size="80"/><br/>
+    <div>
+        <input type="radio" id="non-production" name="environment" value="non-production" checked>
+        <label for="non-production">Non-production</label>
+        <input type="radio" id="production" name="environment" value="production">
+        <label for="production">Production</label>
+    </div>
     <button id="start-app-button">LAUNCH</button>
 
     <div id="patient-info"></div>
