@@ -1,6 +1,6 @@
 const config = {
-        // This client ID worked through 2023-04-17, at which point I marked the app as ready for production. I think at that point I was assigned new prod & non-prod client ID's...
-        clientId: 'c916889f-4e33-4dfa-980d-966ba49315f3', 
+        // This client ID worked through 2023-04-17, and then I marked the app as ready for production. I think at that point I was assigned new prod & non-prod client ID's...
+        clientId: 'c916889f-4e33-4dfa-980d-966ba49315f3', // I believe clientId is ignored at smit.
         scope: 'openid fhirUser launch/patient patient/Patient.read patient/Immunization.read offline_access',
         iss: '(populated later)',
         completeInTarget: true,
@@ -50,8 +50,8 @@ const startApp = () => {
                 break;
         }
     }
-    config.clientId = selectedEnvironment === 'production' ? 'ef227264-2efb-49ac-ad49-0c3b50625d77' : 'c916889f-4e33-4dfa-980d-966ba49315f3';
     setCookie('environment', selectedEnvironment, 1);
+    config.clientId = selectedEnvironment === 'production' ? 'ef227264-2efb-49ac-ad49-0c3b50625d77' : '683d95bc-23cf-480e-afdf-80122574cc22';
 
     FHIR.oauth2.authorize(config);
 }; // const startApp
