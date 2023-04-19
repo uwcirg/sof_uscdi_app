@@ -1,5 +1,6 @@
 const config = {
-        clientId: 'c916889f-4e33-4dfa-980d-966ba49315f3',
+        // This client ID worked through 2023-04-17, at which point I marked the app as ready for production. I think at that point I was assigned new prod & non-prod client ID's...
+        clientId: 'c916889f-4e33-4dfa-980d-966ba49315f3', 
         scope: 'openid fhirUser launch/patient patient/Patient.read patient/Immunization.read offline_access',
         iss: '(populated later)',
         completeInTarget: true,
@@ -9,7 +10,7 @@ const config = {
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('start-app-button').addEventListener('click', startApp);
 
-    readCookieAndApply();
+    readCookiesAndApply();
     
     // if 'sof_host' param is present, populate the field with it.
     const fhirUrlsHardCoded = {
@@ -22,7 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let sofHostHardcodedShortName = urlParams.get('sof_host');
     if (sofHostHardcodedShortName && (sofHostHardcodedShortName in fhirUrlsHardCoded)) {
         setCookie('fhirUrl', fhirUrlsHardCoded[sofHostHardcodedShortName], 1);
-        readCookieAndApply();
+        setCookie('environment', 'non-production', 1);
+        readCookiesAndApply();
     }
 });
 
@@ -39,7 +41,18 @@ const startApp = () => {
     
     setCookie('fhirUrl', inputFhirUrl, 1);
     config.iss = inputFhirUrl;
-    
+
+    const environmentRadios = document.getElementsByName('environment');
+    let selectedEnvironment;
+    for (const radio of environmentRadios) {
+        if (radio.checked) {
+                selectedEnvironment = radio.value;
+                break;
+        }
+    }
+    config.clientId = selectedEnvironment === 'production' ? 'ef227264-2efb-49ac-ad49-0c3b50625d77' : 'c916889f-4e33-4dfa-980d-966ba49315f3';
+    setCookie('environment', selectedEnvironment, 1);
+
     FHIR.oauth2.authorize(config);
 }; // const startApp
 
@@ -76,11 +89,25 @@ if (sessionStorage.getItem('SMART_KEY')) { // is there an event like FHIR.oauth2
 } //if (sessionStorage.getItem('SMART_KEY'))
     
 // Read 'fhirUrl' cookie and populate the field with it.
-function readCookieAndApply() {
-    let fhirUrl = getCookie('fhirUrl');
-    if (fhirUrl != undefined){
+function readCookiesAndApply() {
+
+    let fhirUrlCookie = getCookie('fhirUrl');
+    if (fhirUrlCookie != undefined){
         const fhirBaseUrlInput = document.getElementById('fhir-base-url');
-        fhirBaseUrlInput.value = fhirUrl;
+        fhirBaseUrlInput.value = fhirUrlCookie;
+    }
+
+    const environmentCookie = getCookie('environment');
+    if (environmentCookie) {
+        const nonProductionRadio = document.getElementById('non-production');
+        const productionRadio = document.getElementById('production');
+        if (environmentCookie === 'production') {
+            nonProductionRadio.checked = false;
+            productionRadio.checked = true;
+        } else {
+            nonProductionRadio.checked = true;
+            productionRadio.checked = false;
+        }
     }
 }
 
