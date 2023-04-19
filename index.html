@@ -22,34 +22,35 @@
         <label for="production">Production</label>
     </div>
     <button id="start-app-button">LAUNCH</button>
-	<br/>
-	<br/>
-	<p>* USCDI public endpoints (choose "Production" above):</p>
-	<ul>
-		<li><a href="https://open.epic.com/MyApps/Endpoints">Epic</a></li>
-		<li><a href="https://fhir.cerner.com/millennium/r4/">Cerner (not yet supported by this app)</a></li>
-	</ul>
-	
+    <br/>
 
     <div id="patient-info"></div>
     <div id="immunization-history"></div>
-	<br/>
+    
+    <br/>
+    <br/>
+    <p>* USCDI public endpoints (choose "Production" above):</p>
+    <ul>
+        <li><a href="https://open.epic.com/MyApps/Endpoints">Epic</a></li>
+        <li><a href="https://fhir.cerner.com/millennium/r4/">Cerner (not yet supported by this app)</a></li>
+    </ul>
+    
     <p>Alternatively, use the "sof_host" parameter to the URL (e.g. "?sof_host=epic") to specify either:</p> 
     <ul>
     <li>"smit"
-	<ul>
-		<li>This is the default endpoint.</li>
-		<li>https://launch.smarthealthit.org/v/r4/sim/[guid-ish]/fhir</li>
-		<li>Mr. Abdul Koepp has immunizations (credentials pre-populated).</li>
-	</ul>
+    <ul>
+        <li>This is the default endpoint.</li>
+        <li>https://launch.smarthealthit.org/v/r4/sim/[guid-ish]/fhir</li>
+        <li>Mr. Abdul Koepp has immunizations (credentials pre-populated).</li>
+    </ul>
     or 
     <li>"epic"
-	<ul>
-		<li>The non-production Epic endpoint</li>
-		<li>https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4</li>
-		<li>Desiree Powell has immunizations (credentials: fhirdesiree / epicepic1).</li>
-	</ul>		
+    <ul>
+        <li>The non-production Epic endpoint</li>
+        <li>https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4</li>
+        <li>Desiree Powell has immunizations (credentials: fhirdesiree / epicepic1).</li>
+    </ul>        
     </ul>
-	
+    
 </body>
 </html>
