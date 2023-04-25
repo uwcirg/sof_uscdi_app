@@ -49,7 +49,8 @@
 
 <body>
     <h1>Patient Immunization History</h1>
-    <p>This page can use the SMART on FHIR server of your choosing*.</p>
+    <p>This is a SMART on FHIR app for patient use. It performs a <a href="https://hl7.org/fhir/smart-app-launch/app-launch.html#app-launch-launch-and-authorization">"standalone" launch</a>, during which the EMR will ask you to present patient credentials; note that this app is never given access to those credentials. During the launch you'll also be asked whether you want this app to be able to access certain information from your health record; this app only reads this information in order to display it to you, and does not otherwise share it, nor store it.</p>
+	<p>This page can use the SMART on FHIR server of your choosing*.</p>
     <br/>
     <label for="fhir-base-url">FHIR base URL (R4):</label>
     <input type="text" id="fhir-base-url" size="80"/><br/>
