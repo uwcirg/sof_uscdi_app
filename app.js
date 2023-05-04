@@ -51,7 +51,7 @@ const startApp = () => {
         }
     }
     setCookie('environment', selectedEnvironment, 1);
-    config.clientId = selectedEnvironment === 'production' ? 'ef227264-2efb-49ac-ad49-0c3b50625d77' : '683d95bc-23cf-480e-afdf-80122574cc22';
+    config.clientId = selectedEnvironment === 'production' ? 'd1bc396c-1b91-4135-bfd7-e028f3eeb43a' : '1fb63933-3891-4ac2-a080-e7de0acb6c7f';
 
     FHIR.oauth2.authorize(config);
 }; // const startApp
