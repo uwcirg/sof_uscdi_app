@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMART on FHIR App Immunization Viewer</title>
+    <title>USCDI Viewer - SMART on FHIR App</title>
     <!-- script src="https://raw.githubusercontent.com/smart-on-fhir/client-js/master/dist/build/fhir-client.js"></script -->
     <!-- script src="fhir-client.js"></script -->
     <script src="https://cdn.jsdelivr.net/npm/fhirclient/build/fhir-client.js"></script>
@@ -48,8 +48,8 @@
 </head>
 
 <body>
-    <h1>Patient Immunization History</h1>
-    <p>This is a SMART on FHIR app for patient use. It performs a <a href="https://hl7.org/fhir/smart-app-launch/app-launch.html#app-launch-launch-and-authorization">"standalone" launch</a>, during which the EMR will ask you to present patient credentials; note that this app is never given access to those credentials. During the launch you'll also be asked whether you want this app to be able to access certain information from your health record; this app only reads this information in order to display it to you, and does not otherwise share it, nor store it.</p>
+    <h1>Patient History</h1>
+    <p>This is a SMART on FHIR app for patient use. It performs a <a href="https://hl7.org/fhir/smart-app-launch/app-launch.html#app-launch-launch-and-authorization" target="_blank">"standalone" launch</a>, during which the EMR will ask you to present patient credentials; note that this app is never given access to those credentials. During the launch you'll also be asked whether you want this app to be able to access certain information from your health record; this app only reads this information in order to display it to you, and does not otherwise share it, nor store it.</p>
     <p>This app can use the SMART on FHIR server of your choosing*.</p>
     <label for="fhir-base-url">FHIR base URL (R4):</label>
     <input type="text" id="fhir-base-url" size="80"/><br/>
@@ -78,17 +78,17 @@
     <ul>
         <li>The non-production Epic endpoint</li>
         <li>https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4</li>
-        <li>Desiree Powell has immunizations (credentials: fhirdesiree / epicepic1).</li>
+        <li>Desiree Powell has immunizations (credentials: fhirdesiree / epicepic1). Epic's list of other test patients is <a href="https://fhir.epic.com/Documentation?docId=testpatients" target="_blank">here</a>.</li>
     </ul>        
     </ul>
     <br/>
     <p>* USCDI public endpoints (choose "Production" above):</p>
     <ul>
-        <li><a href="https://open.epic.com/MyApps/Endpoints">Epic</a></li>
-        <li><a href="https://fhir.cerner.com/millennium/r4/">Cerner (not yet supported by this app)</a></li>
+        <li><a href="https://open.epic.com/MyApps/Endpoints" target="_blank">Epic</a></li>
+        <li><a href="https://fhir.cerner.com/millennium/r4/" target="_blank">Cerner (not yet supported by this app)</a></li>
     </ul>
     <br/>
     <br/>
-    <p><i><a href="https://github.com/uwcirg">UW Clinical Informatics Research Group</a>, 2023</i></p>    
+    <p><i><a href="https://github.com/uwcirg" target="_blank">UW Clinical Informatics Research Group</a>, 2023</i></p>    
 </body>
 </html>
