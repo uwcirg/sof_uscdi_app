@@ -1,7 +1,28 @@
+const resourceScope = [
+    'patient/Patient.read',
+    'patient/AllergyIntolerance.read',
+    // 'patient/MedicationStatement.read',
+    'patient/MedicationRequest.read',
+    'patient/Medication.read',
+    'patient/Condition.read',
+    'patient/Observation.read',
+    'patient/Organization.read',
+    'patient/Immunization.read',
+    'patient/Device.read',
+    // 'patient/DeviceUseStatement.read',
+    'patient/DiagnosticReport.read',
+    'patient/ImagingStudy.read',
+    // 'patient/Media.read',
+    'patient/Practitioner.read',
+    'patient/PractitionerRole.read',
+    'patient/Procedure.read',
+    // 'patient/Specimen.read',
+].join(" ");
+
 const config = {
         // This client ID worked through 2023-04-17, and then I marked the app as ready for production. I think at that point I was assigned new prod & non-prod client ID's...
         clientId: 'c916889f-4e33-4dfa-980d-966ba49315f3', // I believe clientId is ignored at smit.
-        scope: 'openid fhirUser launch/patient patient/Patient.read patient/AllergyIntolerance.read patient/MedicationStatement.read patient/MedicationRequest.read patient/Medication.read patient/Condition.read patient/Observation.read patient/Organization.read patient/Immunization.read patient/Device.read patient/DeviceUseStatement.read patient/DiagnosticReport.read patient/ImagingStudy.read patient/Media.read patient/Practitioner.read patient/PractitionerRole.read patient/Procedure.read patient/Specimen.read offline_access',
+        scope: `openid fhirUser launch/patient ${resourceScope} offline_access`,
         iss: '(populated later)',
         completeInTarget: true,
         redirect_uri: 'index.html'
@@ -63,21 +84,21 @@ if (sessionStorage.getItem('SMART_KEY')) { // is there an event like FHIR.oauth2
         const patientInfo = document.getElementById('patient-info');
         const immunizationHistory = document.getElementById('immunization-history');
         const AllergyIntoleranceContent = document.getElementById('AllergyIntoleranceContent');
-        const MedicationStatementContent = document.getElementById('MedicationStatementContent');
+        // const MedicationStatementContent = document.getElementById('MedicationStatementContent');
         const MedicationRequestContent = document.getElementById('MedicationRequestContent');
         const MedicationContent = document.getElementById('MedicationContent');
         const ConditionContent = document.getElementById('ConditionContent');
         const ObservationContent = document.getElementById('ObservationContent');
         const OrganizationContent = document.getElementById('OrganizationContent');
         const DeviceContent = document.getElementById('DeviceContent');
-        const DeviceUseStatementContent = document.getElementById('DeviceUseStatementContent');
+        // const DeviceUseStatementContent = document.getElementById('DeviceUseStatementContent');
         const DiagnosticReportContent = document.getElementById('DiagnosticReportContent');
         const ImagingStudyContent = document.getElementById('ImagingStudyContent');
-        const MediaContent = document.getElementById('MediaContent');
+        // const MediaContent = document.getElementById('MediaContent');
         const PractitionerContent = document.getElementById('PractitionerContent');
         const PractitionerRoleContent = document.getElementById('PractitionerRoleContent');
         const ProcedureContent = document.getElementById('ProcedureContent');
-        const SpecimenContent = document.getElementById('SpecimenContent');
+        // const SpecimenContent = document.getElementById('SpecimenContent');
 
         const requestAndDisplay = (resourceType, displayCallback) => {
             endpoint = (resourceType == 'Patient' ? 'Patient/' : `${resourceType}?patient=`) + client.getPatientId()
@@ -127,19 +148,19 @@ if (sessionStorage.getItem('SMART_KEY')) { // is there an event like FHIR.oauth2
             AllergyIntoleranceContent.append(list)
         });
 
-        requestAndDisplay('MedicationStatement', medicationstatements => {
-            MedicationStatementContent.append('<h2>MedicationStatements</h2>');
-            const list = document.createElement('ul');
+        // requestAndDisplay('MedicationStatement', medicationstatements => {
+        //     MedicationStatementContent.append('<h2>MedicationStatements</h2>');
+        //     const list = document.createElement('ul');
 
-            for (let i = 0; i < medicationstatements.length; i++) {
-                const medicationstatement = medicationstatements[i];
-                const listItem = document.createElement('li');
-                listItem.textContent = "MedicationStatement: " + medicationstatement.fullUrl;
-                list.append(listItem);
-            }
+        //     for (let i = 0; i < medicationstatements.length; i++) {
+        //         const medicationstatement = medicationstatements[i];
+        //         const listItem = document.createElement('li');
+        //         listItem.textContent = "MedicationStatement: " + medicationstatement.fullUrl;
+        //         list.append(listItem);
+        //     }
 
-            MedicationStatementContent.append(list)
-        });
+        //     MedicationStatementContent.append(list)
+        // });
 
         requestAndDisplay('MedicationRequest', medicationrequests => {
             MedicationRequestContent.append('<h2>MedicationRequests</h2>');
@@ -225,19 +246,19 @@ if (sessionStorage.getItem('SMART_KEY')) { // is there an event like FHIR.oauth2
             DeviceContent.append(list)
         });
 
-        requestAndDisplay('DeviceUseStatement', deviceusestatements => {
-            DeviceUseStatementContent.append('<h2>Device Uses</h2>');
-            const list = document.createElement('ul');
+        // requestAndDisplay('DeviceUseStatement', deviceusestatements => {
+        //     DeviceUseStatementContent.append('<h2>Device Uses</h2>');
+        //     const list = document.createElement('ul');
 
-            for (let i = 0; i < deviceusestatements.length; i++) {
-                const deviceusestatement = deviceusestatements[i];
-                const listItem = document.createElement('li');
-                listItem.textContent = "DeviceUseStatement: " + deviceusestatement.fullUrl;
-                list.append(listItem);
-            }
+        //     for (let i = 0; i < deviceusestatements.length; i++) {
+        //         const deviceusestatement = deviceusestatements[i];
+        //         const listItem = document.createElement('li');
+        //         listItem.textContent = "DeviceUseStatement: " + deviceusestatement.fullUrl;
+        //         list.append(listItem);
+        //     }
 
-            DeviceUseStatementContent.append(list)
-        });
+        //     DeviceUseStatementContent.append(list)
+        // });
 
         requestAndDisplay('DiagnosticReport', diagnosticreports => {
             DiagnosticReportContent.append('<h2>Diagnostic Reports</h2>');
@@ -267,19 +288,19 @@ if (sessionStorage.getItem('SMART_KEY')) { // is there an event like FHIR.oauth2
             ImagingStudyContent.append(list)
         });
 
-        requestAndDisplay('Media', media => {
-            MediaContent.append('<h2>Media</h2>');
-            const list = document.createElement('ul');
+        // requestAndDisplay('Media', media => {
+        //     MediaContent.append('<h2>Media</h2>');
+        //     const list = document.createElement('ul');
 
-            for (let i = 0; i < media.length; i++) {
-                const media = media[i];
-                const listItem = document.createElement('li');
-                listItem.textContent = "Media: " + medi.fullUrl;
-                list.append(listItem);
-            }
+        //     for (let i = 0; i < media.length; i++) {
+        //         const media = media[i];
+        //         const listItem = document.createElement('li');
+        //         listItem.textContent = "Media: " + medi.fullUrl;
+        //         list.append(listItem);
+        //     }
 
-            MediaContent.append(list)
-        });
+        //     MediaContent.append(list)
+        // });
 
         requestAndDisplay('Practitioner', practitioners => {
             PractitionerContent.append('<h2>Practitioners</h2>');
@@ -323,19 +344,19 @@ if (sessionStorage.getItem('SMART_KEY')) { // is there an event like FHIR.oauth2
             ProcedureContent.append(list)
         });
 
-        requestAndDisplay('Specimen', specimens => {
-            SpecimenContent.append('<h2>Specimens</h2>');
-            const list = document.createElement('ul');
+        // requestAndDisplay('Specimen', specimens => {
+        //     SpecimenContent.append('<h2>Specimens</h2>');
+        //     const list = document.createElement('ul');
 
-            for (let i = 0; i < specimens.length; i++) {
-                const specimen = specimens[i];
-                const listItem = document.createElement('li');
-                listItem.textContent = "Specimen: " + specimen.fullUrl;
-                list.append(listItem);
-            }
+        //     for (let i = 0; i < specimens.length; i++) {
+        //         const specimen = specimens[i];
+        //         const listItem = document.createElement('li');
+        //         listItem.textContent = "Specimen: " + specimen.fullUrl;
+        //         list.append(listItem);
+        //     }
 
-            SpecimenContent.append(list)
-        });
+        //     SpecimenContent.append(list)
+        // });
 
     }).catch(console.error);
 } //if (sessionStorage.getItem('SMART_KEY'))
