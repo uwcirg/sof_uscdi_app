@@ -207,9 +207,10 @@ function sectionTitle(title) {
     return `<h2>${title}</h2>`;
 }
 
-function patientSection(patientResource, title, resourceContentFn) {
-    const PatientContent = document.getElementById(`${patientResource.resourceType}Content`);
-    const name = patientResource.name[0];
+function patientSection(resourceList, title, resourceContentFn) {
+    let patient = resourceList[0];
+    const PatientContent = document.getElementById(`${patient.resourceType}Content`);
+    const name = patient.name[0];
     const formattedName = `${name.given.join(' ')} ${name.family}`;
     PatientContent.append(sectionTitle(`Patient Name: ${formattedName}`));
 }
