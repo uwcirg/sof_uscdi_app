@@ -10,10 +10,10 @@ const patientResourceConfig = {
     },
     // 'MedicationStatement': {}, // Not in EPIC USCDI R4
     'MedicationRequest': {},
-    'Medication': {},
+    'Medication': {}, // can't search by patient; "Only an _ID search is allowed."
     'Condition': {},
-    'Observation': {},
-    'Organization': {},
+    'Observation': {}, // "Must have either code or category."
+    'Organization': {}, // can't search by patient; "Only an _ID search is allowed."
     'Immunization': {
         title: 'Immunization History',
         itemDisplayFn: immunizationItem,
@@ -23,8 +23,8 @@ const patientResourceConfig = {
     'DiagnosticReport': {},
     // 'ImagingStudy': {}, // Not in EPIC USCDI R4
     // 'Media': {}, // Not in EPIC USCDI R4
-    'Practitioner': {},
-    'PractitionerRole': {},
+    'Practitioner': {}, // can't search by patient; "Either name, family, or identifier is a required parameter."
+    'PractitionerRole': {},  // can't search by patient; "An identifier, practitioner, organization, location, or specialty parameter is required."
     'Procedure': {},
     // 'Specimen': {}, // Not in EPIC USCDI R4
 }
@@ -41,7 +41,7 @@ const config = {
     };
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('start-app-button').addEventListener('click', startApp);
+    $('#start-app-button').addEventListener('click', startApp);
 
     readCookiesAndApply();
     
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const startApp = () => {
     // At this point, the field has the user's desired host URL.
-    const fhirBaseUrlInput = document.getElementById('fhir-base-url');
+    const fhirBaseUrlInput = $('#fhir-base-url');
     const inputFhirUrl = fhirBaseUrlInput.value.trim();
 
     if (!isValidUrl(inputFhirUrl)) {
@@ -134,14 +134,14 @@ function readCookiesAndApply() {
 
     let fhirUrlCookie = getCookie('fhirUrl');
     if (fhirUrlCookie != undefined){
-        const fhirBaseUrlInput = document.getElementById('fhir-base-url');
+        const fhirBaseUrlInput = $('#fhir-base-url');
         fhirBaseUrlInput.value = fhirUrlCookie;
     }
 
     const environmentCookie = getCookie('environment');
     if (environmentCookie) {
-        const nonProductionRadio = document.getElementById('non-production');
-        const productionRadio = document.getElementById('production');
+        const nonProductionRadio = $('#non-production');
+        const productionRadio = $('#production');
         if (environmentCookie === 'production') {
             nonProductionRadio.checked = false;
             productionRadio.checked = true;
@@ -209,7 +209,7 @@ function sectionTitle(title) {
 
 function patientSection(resourceList, title, resourceContentFn) {
     let patient = resourceList[0];
-    const PatientContent = document.getElementById(`${patient.resourceType}Content`);
+    const PatientContent = $(`#${patient.resourceType}Content`);
     const name = patient.name[0];
     const formattedName = `${name.given.join(' ')} ${name.family}`;
     PatientContent.append(sectionTitle(`Patient Name: ${formattedName}`));
@@ -219,7 +219,7 @@ function listSection(resourceList, title, resourceContentFn){
     if (resourceList.length == 0) return;
     let resourceType = resourceList[0].resourceType;
     
-    const section = document.getElementById(`${resourceType}Content`);
+    const section = $(`#${resourceType}Content`);
     section.append(sectionTitle(title ?? resourceNameToTitle(resourceType)));
     const list = document.createElement('ul');
 
