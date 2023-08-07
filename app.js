@@ -182,7 +182,7 @@ function getCookie(name) {
 }
 
 function simpleItem(resource){
-    return `${resource.resourceType}: ${resource}`;
+    return `${resource.resourceType}: ${JSON.stringify(resource, space=4)}`;
 };
 
 function immunizationItem(immunization){
