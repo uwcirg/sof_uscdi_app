@@ -1,7 +1,40 @@
+const defaultSectionDisplayFn = listSection;
+const defaultItemDisplayFn = simpleItem;
+
+const patientResourceConfig = {
+    'Patient': {
+        sectionDisplayFn: patientSection,
+    },
+    'AllergyIntolerance': {
+        title: 'Allergies and Intolerances',
+    },
+    // 'MedicationStatement': {}, // Not in EPIC USCDI R4
+    'MedicationRequest': {},
+    'Medication': {},
+    'Condition': {},
+    'Observation': {},
+    'Organization': {},
+    'Immunization': {
+        title: 'Immunization History',
+        itemDisplayFn: immunizationItem,
+    },
+    'Device': {},
+    // 'DeviceUseStatement': {}, // Not in EPIC USCDI R4
+    'DiagnosticReport': {},
+    // 'ImagingStudy': {}, // Not in EPIC USCDI R4
+    // 'Media': {}, // Not in EPIC USCDI R4
+    'Practitioner': {},
+    'PractitionerRole': {},
+    'Procedure': {},
+    // 'Specimen': {}, // Not in EPIC USCDI R4
+}
+
+const patientResourceScope = Object.keys(patientResourceConfig).map(resourceType => `patient/${resourceType}.read`);
+const resourceScope = patientResourceScope.join(" ");
 const config = {
         // This client ID worked through 2023-04-17, and then I marked the app as ready for production. I think at that point I was assigned new prod & non-prod client ID's...
         clientId: 'c916889f-4e33-4dfa-980d-966ba49315f3', // I believe clientId is ignored at smit.
-        scope: 'openid fhirUser launch/patient patient/Patient.read patient/Immunization.read offline_access',
+        scope: `openid fhirUser launch/patient ${resourceScope} offline_access`,
         iss: '(populated later)',
         completeInTarget: true,
         redirect_uri: 'index.html'
@@ -59,31 +92,35 @@ const startApp = () => {
 
 if (sessionStorage.getItem('SMART_KEY')) { // is there an event like FHIR.oauth2.ready() which would include this criteria?
     FHIR.oauth2.ready().then(client => {
-        // For SMIT, "Abdul Koepp" has immunizations...
-        const patientInfo = document.getElementById('patient-info');
-        const immunizationHistory = document.getElementById('immunization-history');
-
-        client.request('Patient/' + client.getPatientId()).then(patient => {
-            const name = patient.name[0];
-            const formattedName = `${name.given.join(' ')} ${name.family}`;
-            patientInfo.innerHTML = `<h2>Patient Name: ${formattedName}</h2>`;
-        });
-
-        client.request(`Immunization?patient=${client.getPatientId()}`, { flat: true }).then(immunizations => {
-            immunizationHistory.innerHTML = '<h2>Immunization History:</h2>';
-            const list = document.createElement('ul');
-
-            for (let i = 0; i < immunizations.length; i++) {
-                const immunization = immunizations[i];
-                if (immunization === undefined || immunization.resourceType != 'Immunization') continue;
-                const listItem = document.createElement('li');
-                //const displayText = immunization.vaccineCode.coding[0].display ? immunization.vaccineCode.coding[0].display : immunization.vaccineCode.text;
-                const displayText = immunization.vaccineCode.coding[0].display === undefined ? immunization.vaccineCode.text : immunization.vaccineCode.coding[0].display;
-                listItem.textContent = `${displayText} - ${immunization.occurrenceDateTime}`;
-                list.appendChild(listItem);
-            }
-
-            immunizationHistory.appendChild(list);
+        const requestResources = (resourceType) => {
+            let endpoint = (resourceType == 'Patient' ? 'Patient/' : `${resourceType}?patient=`) + client.getPatientId();
+            return new Promise((resolve) => {
+                client.request(endpoint, { flat: true }).then(resources => {
+                    let resourcesToPass = []
+                    resources.forEach(resource => {
+                        if (resource === undefined || resource.resourceType != resourceType) return;
+                        resourcesToPass.push(resource);
+                    });
+                    resolve(resourcesToPass);
+                });
+            });
+        };
+        // Establish resource display methods
+        const sectionDisplays = Object.fromEntries(
+            Object.entries(patientResourceConfig).map(([resourceType, resourceConfig]) => {
+                let title = resourceConfig.title ?? resourceNameToTitle(resourceType);
+                let itemDisplayFn = resourceConfig.itemDisplayFn ?? defaultItemDisplayFn;
+                let sectionDisplayFn = (resourceList) => (resourceConfig.sectionDisplayFn ?? defaultSectionDisplayFn)(resourceList, title, itemDisplayFn);
+                return [resourceType, sectionDisplayFn];
+            })
+        );
+        
+        // Request resources, then display content according to configuration
+        Object.entries(sectionDisplays).map(([resourceType, sectionDisplayFn]) => {
+            requestResources(resourceType).then(
+                result => sectionDisplayFn(result), // display the resource content
+                error => alert(error) // doesn't run
+            );
         });
     }).catch(console.error);
 } //if (sessionStorage.getItem('SMART_KEY'))
@@ -146,3 +183,46 @@ function getCookie(name) {
 
   return null;
 }
+
+function simpleItem(resource){
+    return `${resource.resourceType}: ${resource.fullUrl}`;
+};
+
+function immunizationItem(immunization){
+    const displayText = immunization.vaccineCode.coding[0].display === undefined ? immunization.vaccineCode.text : immunization.vaccineCode.coding[0].display;
+    return `${displayText} - ${immunization.occurrenceDateTime}`;
+}
+
+function resourceNameToTitle(str){
+    if (str == null) return "";
+    // "PractitionerRole" ->"Practitioner Roles"
+    return str.match(/[A-Z][a-z]+/g).join(" ") + "s";
+}
+
+function sectionTitle(title) {
+    return `<h2>${title}</h2>`;
+}
+
+function patientSection(patientResource, title, resourceContentFn) {
+    const PatientContent = document.getElementById(`${patientResource.resourceType}Content`);
+    const name = patientResource.name[0];
+    const formattedName = `${name.given.join(' ')} ${name.family}`;
+    PatientContent.append(sectionTitle(`Patient Name: ${formattedName}`));
+}
+
+function listSection(resourceList, title, resourceContentFn){
+    if (resourceList.length == 0) return;
+    let resourceType = resourceList[0].resourceType;
+    
+    const section = document.getElementById(`${resourceType}Content`);
+    section.append(sectionTitle(title ?? resourceNameToTitle(resourceType)));
+    const list = document.createElement('ul');
+
+    for (let i = 0; i < resourceList.length; i++) {
+        const resource = resourceList[i];
+        const listItem = document.createElement('li');
+        listItem.textContent = resourceContentFn(resource);
+        list.append(listItem);
+    }
+    section.append(list);
+};
