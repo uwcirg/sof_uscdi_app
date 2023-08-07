@@ -95,12 +95,16 @@ if (sessionStorage.getItem('SMART_KEY')) { // is there an event like FHIR.oauth2
         const requestResources = (resourceType) => {
             let endpoint = (resourceType == 'Patient' ? 'Patient/' : `${resourceType}?patient=`) + client.getPatientId();
             return new Promise((resolve) => {
-                client.request(endpoint, { flat: true }).then(resources => {
+                client.request(endpoint, { flat: true }).then(result => {
                     let resourcesToPass = []
-                    resources.forEach(resource => {
-                        if (resource === undefined || resource.resourceType != resourceType) return;
-                        resourcesToPass.push(resource);
-                    });
+                    if (Array.isArray (result)) {
+                        result.forEach(resource => {
+                            if (resource === undefined || resource.resourceType != resourceType) return;
+                            resourcesToPass.push(resource);
+                        });
+                    } else {
+                        resourcesToPass.push(result);
+                    }
                     resolve(resourcesToPass);
                 });
             });
