@@ -189,7 +189,7 @@ function getCookie(name) {
 }
 
 function simpleItem(resource){
-    return `${resource.resourceType}: ${resource.fullUrl}`;
+    return `${resource.resourceType}: ${resource}`;
 };
 
 function immunizationItem(immunization){
