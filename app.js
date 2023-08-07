@@ -20,12 +20,12 @@ const patientResourceConfig = {
     },
     'Device': {},
     // 'DeviceUseStatement': {}, // Not in EPIC USCDI R4
-    'DiagnosticReport': {},
+    'DiagnosticReport': {}, // TODO change to subject
     // 'ImagingStudy': {}, // Not in EPIC USCDI R4
     // 'Media': {}, // Not in EPIC USCDI R4
     'Practitioner': {}, // can't search by patient; "Either name, family, or identifier is a required parameter."
     'PractitionerRole': {},  // can't search by patient; "An identifier, practitioner, organization, location, or specialty parameter is required."
-    'Procedure': {},
+    'Procedure': {}, // TODO change to subject
     // 'Specimen': {}, // Not in EPIC USCDI R4
 }
 
@@ -40,8 +40,8 @@ const config = {
         redirect_uri: 'index.html'
     };
 
-document.addEventListener('DOMContentLoaded', () => {
-    $('#start-app-button').addEventListener('click', startApp);
+$(document).ready(() => {
+    $('#start-app-button').on('click', startApp);
 
     readCookiesAndApply();
     
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const startApp = () => {
     // At this point, the field has the user's desired host URL.
     const fhirBaseUrlInput = $('#fhir-base-url');
-    const inputFhirUrl = fhirBaseUrlInput.value.trim();
+    const inputFhirUrl = fhirBaseUrlInput.val().trim();
 
     if (!isValidUrl(inputFhirUrl)) {
         alert('The URL is not valid. Please enter a valid URL.');
@@ -75,14 +75,7 @@ const startApp = () => {
     setCookie('fhirUrl', inputFhirUrl, 1);
     config.iss = inputFhirUrl;
 
-    const environmentRadios = document.getElementsByName('environment');
-    let selectedEnvironment;
-    for (const radio of environmentRadios) {
-        if (radio.checked) {
-                selectedEnvironment = radio.value;
-                break;
-        }
-    }
+    let selectedEnvironment = $('radio[name="environment"]:checked').val();
     setCookie('environment', selectedEnvironment, 1);
     config.clientId = selectedEnvironment === 'production' ? 'd1bc396c-1b91-4135-bfd7-e028f3eeb43a' : '1fb63933-3891-4ac2-a080-e7de0acb6c7f';
 
@@ -135,7 +128,7 @@ function readCookiesAndApply() {
     let fhirUrlCookie = getCookie('fhirUrl');
     if (fhirUrlCookie != undefined){
         const fhirBaseUrlInput = $('#fhir-base-url');
-        fhirBaseUrlInput.value = fhirUrlCookie;
+        fhirBaseUrlInput.val(fhirUrlCookie);
     }
 
     const environmentCookie = getCookie('environment');
@@ -143,11 +136,11 @@ function readCookiesAndApply() {
         const nonProductionRadio = $('#non-production');
         const productionRadio = $('#production');
         if (environmentCookie === 'production') {
-            nonProductionRadio.checked = false;
-            productionRadio.checked = true;
+            nonProductionRadio.prop('checked', false);
+            productionRadio.prop('checked', true);
         } else {
-            nonProductionRadio.checked = true;
-            productionRadio.checked = false;
+            nonProductionRadio.prop('checked', true);
+            productionRadio.prop('checked', false);
         }
     }
 }
