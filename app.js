@@ -33,7 +33,7 @@ const patientResourceScope = Object.keys(patientResourceConfig).map(resourceType
 const resourceScope = patientResourceScope.join(" ");
 const config = {
         // This client ID worked through 2023-04-17, and then I marked the app as ready for production. I think at that point I was assigned new prod & non-prod client ID's...
-        clientId: 'c916889f-4e33-4dfa-980d-966ba49315f3', // I believe clientId is ignored at smit.
+        clientId: 'd1bc396c-1b91-4135-bfd7-e028f3eeb43a', // I believe clientId is ignored at smit.
         scope: `openid fhirUser launch/patient ${resourceScope} offline_access`,
         iss: '(populated later)',
         completeInTarget: true,
