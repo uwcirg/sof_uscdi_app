@@ -77,7 +77,7 @@ const startApp = () => {
 
     let selectedEnvironment = $('radio[name="environment"]:checked').val();
     setCookie('environment', selectedEnvironment, 1);
-    config.clientId = selectedEnvironment === 'production' ? 'd1bc396c-1b91-4135-bfd7-e028f3eeb43a' : '1fb63933-3891-4ac2-a080-e7de0acb6c7f';
+    // config.clientId = selectedEnvironment === 'production' ? 'd1bc396c-1b91-4135-bfd7-e028f3eeb43a' : '1fb63933-3891-4ac2-a080-e7de0acb6c7f';
 
     FHIR.oauth2.authorize(config);
 }; // const startApp
