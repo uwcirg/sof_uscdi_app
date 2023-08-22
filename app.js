@@ -10,7 +10,7 @@ const patientResourceConfig = {
     },
     // 'MedicationStatement': {}, // Not in EPIC USCDI R4
     'MedicationRequest': {},
-    'Medication': {}, // can't search by patient; "Only an _ID search is allowed."
+    // 'Medication': {}, // can't search by patient; "Only an _ID search is allowed."
     'Condition': {},
     'Observation': {}, // "Must have either code or category."
     // 'Organization': {}, // can't search by patient; "Only an _ID search is allowed."
