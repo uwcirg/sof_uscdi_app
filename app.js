@@ -86,40 +86,42 @@ function selectOther() {
 
 if (sessionStorage.getItem('SMART_KEY')) { // is there an event like FHIR.oauth2.ready() which would include this criteria?
     FHIR.oauth2.ready().then(client => {
-        const requestResources = (resourceType) => {
-            let endpoint = (resourceType == 'Patient' ? 'Patient/' : `${resourceType}?patient=`) + client.getPatientId();
-            return new Promise((resolve) => {
-                client.request(endpoint, { flat: true }).then(result => {
-                    let resourcesToPass = []
-                    if (Array.isArray (result)) {
-                        result.forEach(resource => {
-                            if (resource === undefined || resource.resourceType != resourceType) return;
-                            resourcesToPass.push(resource);
-                        });
-                    } else {
-                        resourcesToPass.push(result);
-                    }
-                    resolve(resourcesToPass);
+        if (client.getPatientId()) {
+            const requestResources = (resourceType) => {
+                let endpoint = (resourceType == 'Patient' ? 'Patient/' : `${resourceType}?patient=`) + client.getPatientId();
+                return new Promise((resolve) => {
+                    client.request(endpoint, { flat: true }).then(result => {
+                        let resourcesToPass = []
+                        if (Array.isArray (result)) {
+                            result.forEach(resource => {
+                                if (resource === undefined || resource.resourceType != resourceType) return;
+                                resourcesToPass.push(resource);
+                            });
+                        } else {
+                            resourcesToPass.push(result);
+                        }
+                        resolve(resourcesToPass);
+                    });
                 });
-            });
-        };
-        // Establish resource display methods
-        const sectionDisplays = Object.fromEntries(
-            Object.entries(patientResourceConfig).map(([resourceType, resourceConfig]) => {
-                let title = resourceConfig.title ?? resourceNameToTitle(resourceType);
-                let itemDisplayFn = resourceConfig.itemDisplayFn ?? defaultItemDisplayFn;
-                let sectionDisplayFn = (resourceList) => (resourceConfig.sectionDisplayFn ?? defaultSectionDisplayFn)(resourceList, title, itemDisplayFn);
-                return [resourceType, sectionDisplayFn];
-            })
-        );
-        
-        // Request resources, then display content according to configuration
-        Object.entries(sectionDisplays).map(([resourceType, sectionDisplayFn]) => {
-            requestResources(resourceType).then(
-                result => sectionDisplayFn(result), // display the resource content
-                error => alert(error) // doesn't run
+            };
+            // Establish resource display methods
+            const sectionDisplays = Object.fromEntries(
+                Object.entries(patientResourceConfig).map(([resourceType, resourceConfig]) => {
+                    let title = resourceConfig.title ?? resourceNameToTitle(resourceType);
+                    let itemDisplayFn = resourceConfig.itemDisplayFn ?? defaultItemDisplayFn;
+                    let sectionDisplayFn = (resourceList) => (resourceConfig.sectionDisplayFn ?? defaultSectionDisplayFn)(resourceList, title, itemDisplayFn);
+                    return [resourceType, sectionDisplayFn];
+                })
             );
-        });
+            
+            // Request resources, then display content according to configuration
+            Object.entries(sectionDisplays).map(([resourceType, sectionDisplayFn]) => {
+                requestResources(resourceType).then(
+                    result => sectionDisplayFn(result), // display the resource content
+                    error => alert(error) // doesn't run
+                );
+            });
+        }
     }).catch(console.error);
 } //if (sessionStorage.getItem('SMART_KEY'))
     
