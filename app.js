@@ -13,27 +13,29 @@ const patientResourceConfig = {
     'Medication': {}, // can't search by patient; "Only an _ID search is allowed."
     'Condition': {},
     'Observation': {}, // "Must have either code or category."
-    'Organization': {}, // can't search by patient; "Only an _ID search is allowed."
+    // 'Organization': {}, // can't search by patient; "Only an _ID search is allowed."
     'Immunization': {
         title: 'Immunization History',
         itemDisplayFn: immunizationItem,
     },
-    'Device': {},
+    // 'Device': {},
     // 'DeviceUseStatement': {}, // Not in EPIC USCDI R4
     'DiagnosticReport': {}, // TODO change to subject
     // 'ImagingStudy': {}, // Not in EPIC USCDI R4
     // 'Media': {}, // Not in EPIC USCDI R4
-    'Practitioner': {}, // can't search by patient; "Either name, family, or identifier is a required parameter."
-    'PractitionerRole': {},  // can't search by patient; "An identifier, practitioner, organization, location, or specialty parameter is required."
+    // 'Practitioner': {}, // can't search by patient; "Either name, family, or identifier is a required parameter."
+    // 'PractitionerRole': {},  // can't search by patient; "An identifier, practitioner, organization, location, or specialty parameter is required."
     'Procedure': {}, // TODO change to subject
     // 'Specimen': {}, // Not in EPIC USCDI R4
 }
 
 const patientResourceScope = Object.keys(patientResourceConfig).map(resourceType => `patient/${resourceType}.read`);
 const resourceScope = patientResourceScope.join(" ");
+const nonProductionClientID = '1fb63933-3891-4ac2-a080-e7de0acb6c7f';
+const productionClientID = 'd1bc396c-1b91-4135-bfd7-e028f3eeb43a';
 const config = {
         // This client ID worked through 2023-04-17, and then I marked the app as ready for production. I think at that point I was assigned new prod & non-prod client ID's...
-        clientId: 'd1bc396c-1b91-4135-bfd7-e028f3eeb43a', // I believe clientId is ignored at smit.
+        clientId: productionClientID, // I believe clientId is ignored at smit.
         scope: `openid fhirUser launch/patient ${resourceScope} offline_access`,
         iss: '(populated later)',
         completeInTarget: true,
@@ -42,46 +44,45 @@ const config = {
 
 $(document).ready(() => {
     $('#start-app-button').on('click', startApp);
-
-    readCookiesAndApply();
-    
-    // if 'sof_host' param is present, populate the field with it.
-    const fhirUrlsHardCoded = {
-        smit: 'https://launch.smarthealthit.org/v/r4/sim/WzMsIiIsIiIsIkFVVE8iLDAsMCwwLCIiLCIiLCIiLCIiLCIiLCIiLCIiLDAsMF0/fhir',
-        epic: 'https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4' // per https://open.epic.com/MyApps/Endpoints
-        //const fhirUrl = 'https://vendorservices.epic.com/interconnect-amcurprd-oauth/oauth2/authorize';
-        //const fhirUrl = 'https://appmarket.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4'; // per https://vendorservices.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4/metadata and earlier testing.
-    };
-    const urlParams = new URLSearchParams(window.location.search);
-    let sofHostHardcodedShortName = urlParams.get('sof_host');
-    if (sofHostHardcodedShortName && (sofHostHardcodedShortName in fhirUrlsHardCoded)) {
-        setCookie('fhirUrl', fhirUrlsHardCoded[sofHostHardcodedShortName], 1);
-        setCookie('environment', 'non-production', 1);
-        readCookiesAndApply();
-    }
+    $('#fhir-base-url').on('click', selectOther);
+    $('.accordion-header').click(function() {
+        $(this).toggleClass('active');
+        $(this).next('.accordion-content').slideToggle();
+      });
+    $('#show-more').click(function() {
+        $('#show-more').slideToggle();
+        $('#more').slideToggle();
+    });
+    $('#show-less').click(function() {
+        $('#more').slideToggle();
+        $('#show-more').slideToggle();
+    });
 });
 
 
-const startApp = () => {
+function startApp() {
     // At this point, the field has the user's desired host URL.
-    const fhirBaseUrlInput = $('#fhir-base-url');
-    const inputFhirUrl = fhirBaseUrlInput.val().trim();
+    const endpointSelection = $('input[type=radio]:checked');
+    config.clientId = endpointSelection.hasClass('production') ? productionClientID : nonProductionClientID;
+    let valueInput = endpointSelection.attr('id') === "other" ? $('#fhir-base-url') : endpointSelection;
+    let inputFhirUrl = valueInput.val().trim();
+    if (inputFhirUrl.endsWith('/')) {
+        inputFhirUrl = inputFhirUrl.split(0, -1);
+    }
 
     if (!isValidUrl(inputFhirUrl)) {
         alert('The URL is not valid. Please enter a valid URL.');
         return;
     }
-    
-    setCookie('fhirUrl', inputFhirUrl, 1);
     config.iss = inputFhirUrl;
-
-    let selectedEnvironment = $('input[name="environment"]:checked').val();
-    setCookie('environment', selectedEnvironment, 1);
-    // config.clientId = selectedEnvironment === 'production' ? 'd1bc396c-1b91-4135-bfd7-e028f3eeb43a' : '1fb63933-3891-4ac2-a080-e7de0acb6c7f';
 
     FHIR.oauth2.authorize(config);
 }; // const startApp
 
+function selectOther() {
+    $('input[type=radio]:checked').prop('checked', false);
+    $('#other').prop('checked', true);
+}
 
 if (sessionStorage.getItem('SMART_KEY')) { // is there an event like FHIR.oauth2.ready() which would include this criteria?
     FHIR.oauth2.ready().then(client => {

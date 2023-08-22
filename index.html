@@ -22,6 +22,43 @@
             color: #001F5B;
         }
 
+        .endpoint-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .endpoint-group label {
+            margin-left: 20px;
+            margin-bottom: 5px;
+            
+            input[type=radio] {
+                margin-right: 8px;
+            }
+            
+            input[type=text] {
+                margin-left: 20px
+            }
+        }
+
+        .endpoint-group h3 {
+            + .description {
+                margin-bottom: 15px;
+                font-style: italic;
+            }
+            margin-bottom: 1px;
+        }
+
+        .note {
+            margin-left: 20px;
+            font-weight: 400 !important;
+            font-style: italic;
+            margin-left: 20px;
+        }
+
+        .hidden {
+            display:none;
+        }
+
         button {
             background-color: #0072CE;
             color: #fff;
@@ -50,15 +87,48 @@
 
 <body>
     <h1>Patient History</h1>
-    <p>This is a SMART on FHIR app for patient use. It performs a <a href="https://hl7.org/fhir/smart-app-launch/app-launch.html#app-launch-launch-and-authorization" target="_blank">"standalone" launch</a>, during which the EMR will ask you to present patient credentials; note that this app is never given access to those credentials. During the launch you'll also be asked whether you want this app to be able to access certain information from your health record; this app only reads this information in order to display it to you, and does not otherwise share it, nor store it.</p>
-    <p>This app can use the SMART on FHIR server of your choosing*.</p>
-    <label for="fhir-base-url">FHIR base URL (R4):</label>
-    <input type="text" id="fhir-base-url" size="80"/><br/>
+    <!-- <p>This is a SMART on FHIR app for patient use. It performs a <a href="https://hl7.org/fhir/smart-app-launch/app-launch.html#app-launch-launch-and-authorization" target="_blank">"standalone" launch</a>, during which the EMR will ask you to present patient credentials; note that this app is never given access to those credentials. During the launch you'll also be asked whether you want this app to be able to access certain information from your health record; this app only reads this information in order to display it to you, and does not otherwise share it, nor store it.</p> -->
+    <p>If you have a MyChart account with a health care provider, this app allows you log in and electronically view your health information. Select or enter the endpoint of your choice, then use MyChart to log in and grant access to the information you would like to view. Note that this app displays your health information to you but does not store that information or share it elsewhere, and does not have access to your MyChart username or password.  <span id="show-more"><a href="#">More...</a></span></p>
+    <div id="more" class="hidden">
+        <p><strong>Why did we write this?</strong></p>
+        <p>This application demonstrates the use of SMART patient-mediated access to provide a registered, third-party application with limited access to a patient's electronic health record. In this case, the set of resources requested are those included in the <a href="https://international-patient-summary.net" target="_blank">International Patient Summary (IPS)</a>, a standardized format for sharing commonly requested health information including allergies, medications, conditions, lab results, and more. While this application <em>only displays</em> the health data it receives, patient-mediated access could be used by applications like <a href="https://smart-health-links-ips.cirg.washington.edu/home" target="_blank">WA Verify+</a> to perform more complicated functions, construct an IPS from the retreived data, and provide methods for users to share their Summary with others (e.g. SMART Health Links).</p>
+        <p><strong>How private is it?</strong></p>
+        <p>This app communicates with the USCDI server of your choosing via well-established, secure SMART authentication protocols. It:</p>
+        <ul>
+            <li>does not store any of the information it displays</li>
+            <li>has no access to MyChart login information</li>
+            <li>only requests resources the user approves</li>
+        </ul>
+        <p>Additionally, all access to user health information is revoked after one hour.</p>
+        <p id="show-less"><a href="#">Show less</a></p>
+    </div>
+    <p>You first need to identify your health care provider. Select one of the options below, or select "Other EPIC FHIR R4 Endpoint" and copy one from <a href="https://open.epic.com/MyApps/Endpoints" target="_blank">this national list</a> (replace the ending with “R4” if necessary) into the text box below.</p>
     <div>
-        <input type="radio" id="non-production" name="environment" value="non-production" checked>
-        <label for="non-production">Non-production</label>
-        <input type="radio" id="production" name="environment" value="production">
-        <label for="production">Production</label>
+        <form class="endpoint-group">
+            <h3>Production Endpoints</h3>
+            <span class="description">View your own data using your MyChart login</span>
+            <label><input type="radio" class="production" id="uw" name="environment" value="https://fhir.epic.medical.washington.edu/FHIR-Proxy/api/FHIR/R4">UW Medicine (Washington State)</label>
+            <label><input type="radio" class="production" id="providence_wa" name="environment" value="https://haikuwa.providence.org/fhirproxy/api/FHIR/R4">Providence Health (WA, MT)</label>
+            <label><input type="radio" class="production" id="providence_or" name="environment" value="https://haikuor.providence.org/fhirproxy/api/FHIR/R4">Providence Health (CA, OR)</label>
+            <label><input type="radio" class="production" id="providence_ak" name="environment" value="https://haikuak.providence.org/fhirproxy/api/FHIR/R4">Providence Health (AK)</label>
+            <label><input type="radio" class="production" id="skagit" name="environment" value="https://epicproxy.et1005.epichosted.com/FHIRProxy/api/FHIR/R4">Skagit Regional Health</label>
+            <label><input type="radio" class="production" id="ochin" name="environment" value="https://webprd.ochin.org/prd-fhir/api/FHIR/R4">OCHIN</label>
+            <label><input type="radio" class="production" id="multicare" name="environment" value="https://soapprod.multicare.org/FHIRProxy/api/FHIR/R4">MultiCare Heath</label>
+            <label><input type="radio" class="production" id="confluence" name="environment" value="https://epicproxy.et0764.epichosted.com/FHIRProxy/api/FHIR/R4">Confluence Health</label>
+            <label><input type="radio" class="production" id="other" name="environment" value="">Other FHIR R4 endpoint:<br/>
+                <input type="text" id="fhir-base-url" size="80" placeholder='URL ending in "/FHIR/R4"'/><br/>
+                <span class="note"><a href="https://open.epic.com/MyApps/Endpoints" target="_blank">List of national EPIC production endpoints</a></span>
+            </label>
+            <h3>Non-Production Endpoints</h3>
+            <span class="description">View test patient data using provided credentials</span>
+            <label><input type="radio" class="non-production" id="smit" name="environment" value="https://launch.smarthealthit.org/v/r4/sim/WzMsIiIsIiIsIkFVVE8iLDAsMCwwLCIiLCIiLCIiLCIiLCIiLCIiLCIiLDAsMF0/fhir" checked>SMART Health IT <br/>
+                <span class="note">Credentials pre-populated for Abdul Koepp</span>
+            </label>
+            <label><input type="radio" class="non-production" id="epic" name="environment" value="https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4">EPIC <br/>
+                <span class="note">Credentials: fhirdesiree / epicepic1</span><br/>
+                <span class="note">Other EPIC test patient credentials can be found <a href="https://fhir.epic.com/Documentation?docId=testpatients" target="_blank">here</a>.</span>
+            </label>
+        </form>
     </div>
     <button id="start-app-button">LAUNCH</button>
     <br/>
@@ -81,29 +151,6 @@
     <div id="PractitionerRoleContent"></div>
     <div id="ProcedureContent"></div>
     <div id="SpecimenContent"></div>
-    
-    <br/>
-    <p>Alternatively, add the "sof_host" parameter to the URL (e.g. "?sof_host=epic") to specify either:</p> 
-    <ul>
-    <li>"smit"
-    <ul>
-        <li>https://launch.smarthealthit.org/v/r4/sim/[guid-ish]/fhir</li>
-        <li>Mr. Abdul Koepp has immunizations (credentials pre-populated).</li>
-    </ul>
-    or 
-    <li>"epic"
-    <ul>
-        <li>The non-production Epic endpoint</li>
-        <li>https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4</li>
-        <li>Desiree Powell has immunizations (credentials: fhirdesiree / epicepic1). Epic's list of other test patients is <a href="https://fhir.epic.com/Documentation?docId=testpatients" target="_blank">here</a>.</li>
-    </ul>        
-    </ul>
-    <br/>
-    <p>* USCDI public endpoints (choose "Production" above):</p>
-    <ul>
-        <li><a href="https://open.epic.com/MyApps/Endpoints" target="_blank">Epic</a></li>
-        <li><a href="https://fhir.cerner.com/millennium/r4/" target="_blank">Cerner (not yet supported by this app)</a></li>
-    </ul>
     <br/>
     <br/>
     <p><i><a href="https://github.com/uwcirg" target="_blank">UW Clinical Informatics Research Group</a>, 2023</i></p>    
