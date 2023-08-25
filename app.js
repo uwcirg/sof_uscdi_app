@@ -213,10 +213,14 @@ function patientSection(resourceList, title, resourceContentFn) {
 
 function listSection(resourceList, title, resourceContentFn){
     if (resourceList.length == 0) return;
+
     let resourceType = resourceList[0].resourceType;
-    
-    const section = $(`#${resourceType}Content`);
-    section.append(sectionTitle(title ?? resourceNameToTitle(resourceType)));
+    title = title ?? resourceNameToTitle(resourceType);
+    const sectionId = `#${resourceType}Content`;
+    const section = $(sectionId);
+    addToTOC(title, resourceType);
+
+    section.append(sectionTitle(title));
     const list = document.createElement('ul');
 
     for (let i = 0; i < resourceList.length; i++) {
@@ -227,3 +231,8 @@ function listSection(resourceList, title, resourceContentFn){
     }
     section.append(list);
 };
+
+function addToTOC(title, resourceType) {
+    $(`#toc`).show();
+    const toc = $(`#${resourceType}TOC`).html(`${title}<br/>`);
+}
