@@ -89,8 +89,7 @@ if (sessionStorage.getItem('SMART_KEY')) { // is there an event like FHIR.oauth2
         if (client.getPatientId()) {
             const requestResources = (resourceType) => {
                 let endpoint = (resourceType == 'Patient' ? 'Patient/' : `${resourceType}?patient=`) + client.getPatientId();
-                return new Promise((resolve) => {
-                    client.request(endpoint, { flat: true }).then(result => {
+                return client.request(endpoint, { flat: true }).then(result => {
                         let resourcesToPass = []
                         if (Array.isArray (result)) {
                             result.forEach(resource => {
@@ -100,8 +99,10 @@ if (sessionStorage.getItem('SMART_KEY')) { // is there an event like FHIR.oauth2
                         } else {
                             resourcesToPass.push(result);
                         }
-                        resolve(resourcesToPass);
-                    });
+                        return resourcesToPass;
+                }).catch(error => {
+                    console.error(error);
+                    return []; // resolve successfully with an empty array despite request error
                 });
             };
             // Establish resource display methods
@@ -115,12 +116,23 @@ if (sessionStorage.getItem('SMART_KEY')) { // is there an event like FHIR.oauth2
             );
             
             // Request resources, then display content according to configuration
-            Object.entries(sectionDisplays).map(([resourceType, sectionDisplayFn]) => {
-                requestResources(resourceType).then(
-                    result => sectionDisplayFn(result), // display the resource content
-                    error => alert(error) // doesn't run
-                );
-            });
+            Promise.all(Object.keys(sectionDisplays).map((resourceType) => {
+                return requestResources(resourceType);
+            })).then(
+                results => {
+                    displayFunctions = Object.values(sectionDisplays);
+                    if (results.length == displayFunctions.length) {
+                        for (i = 0; i < displayFunctions.length; i++) {
+                            displayFunctions[i](results[i]);
+                        }
+                        $('#content').show();
+                    } else {
+                        alert('Something went wrong.');
+                    }
+                } // display the resource content
+            ).catch(
+                error => alert(error) // doesn't run
+            );
         }
     }).catch(console.error);
 } //if (sessionStorage.getItem('SMART_KEY'))
@@ -233,6 +245,5 @@ function listSection(resourceList, title, resourceContentFn){
 };
 
 function addToTOC(title, resourceType) {
-    $(`#toc`).show();
-    const toc = $(`#${resourceType}TOC`).html(`${title}<br/>`);
+    $(`#${resourceType}TOC`).html(`${title}<br/>`);
 }
