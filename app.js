@@ -85,6 +85,7 @@ function selectOther() {
 }
 
 if (sessionStorage.getItem('SMART_KEY')) { // is there an event like FHIR.oauth2.ready() which would include this criteria?
+    $('.loader').show();
     FHIR.oauth2.ready().then(client => {
         if (client.getPatientId()) {
             const requestResources = (resourceType) => {
@@ -125,6 +126,7 @@ if (sessionStorage.getItem('SMART_KEY')) { // is there an event like FHIR.oauth2
                         for (i = 0; i < displayFunctions.length; i++) {
                             displayFunctions[i](results[i]);
                         }
+                        $('.loader').hide();
                         $('#content').show();
                     } else {
                         alert('Something went wrong.');
