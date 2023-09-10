@@ -123,8 +123,17 @@ if (sessionStorage.getItem('SMART_KEY')) { // is there an event like FHIR.oauth2
                 results => {
                     displayFunctions = Object.values(sectionDisplays);
                     if (results.length == displayFunctions.length) {
+                        let numResourceTypesDisplayed = 0;
                         for (i = 0; i < displayFunctions.length; i++) {
-                            displayFunctions[i](results[i]);
+                            if (results[i].length > 0) {
+                                if (results[i][0].resourceType != 'Patient') {
+                                    numResourceTypesDisplayed++;
+                                }
+                                displayFunctions[i](results[i]);
+                            }
+                        }
+                        if (numResourceTypesDisplayed == 0) {
+                            emptyDisplay();
                         }
                         $('.loader').hide();
                         $('#content').show();
@@ -248,4 +257,9 @@ function listSection(resourceList, title, resourceContentFn){
 
 function addToTOC(title, resourceType) {
     $(`#${resourceType}TOC`).html(`${title}<br/>`);
+}
+
+function emptyDisplay() {
+    $('#toc').hide();
+    $(`#EmptyContent`).html(`<p>No content returned.</p>`);
 }
