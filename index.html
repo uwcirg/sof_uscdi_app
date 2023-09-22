@@ -129,27 +129,31 @@
         <form class="endpoint-group">
             <h3>Production Endpoints</h3>
             <span class="description">Securely view your own data using your MyChart login</span>
-            <label><input type="radio" class="production" id="uw" name="environment" value="https://fhir.epic.medical.washington.edu/FHIR-Proxy/api/FHIR/R4">UW Medicine (Washington State)</label>
-            <label><input type="radio" class="production" id="providence_wa" name="environment" value="https://haikuwa.providence.org/fhirproxy/api/FHIR/R4">Providence Health (WA, MT)</label>
-            <label><input type="radio" class="production" id="providence_or" name="environment" value="https://haikuor.providence.org/fhirproxy/api/FHIR/R4">Providence Health (CA, OR)</label>
-            <label><input type="radio" class="production" id="providence_ak" name="environment" value="https://haikuak.providence.org/fhirproxy/api/FHIR/R4">Providence Health (AK)</label>
-            <label><input type="radio" class="production" id="skagit" name="environment" value="https://epicproxy.et1005.epichosted.com/FHIRProxy/api/FHIR/R4">Skagit Regional Health</label>
-            <label><input type="radio" class="production" id="ochin" name="environment" value="https://webprd.ochin.org/prd-fhir/api/FHIR/R4">OCHIN</label>
-            <label><input type="radio" class="production" id="multicare" name="environment" value="https://soapprod.multicare.org/FHIRProxy/api/FHIR/R4">MultiCare Heath</label>
-            <label><input type="radio" class="production" id="confluence" name="environment" value="https://epicproxy.et0764.epichosted.com/FHIRProxy/api/FHIR/R4">Confluence Health</label>
-            <label><input type="radio" class="production" id="other" name="environment" value="">Other FHIR R4 endpoint:<br/>
+            <label><input type="radio" class="cerner production" id="childrens_sea" name="environment" value="https://fhir-myrecord.cerner.com/r4/449052b2-b4e6-4960-bed6-39119385345b">Seattle Children's Hospital</label>
+            <label><input type="radio" class="epic production" id="uw" name="environment" value="https://fhir.epic.medical.washington.edu/FHIR-Proxy/api/FHIR/R4">UW Medicine (Washington State)</label>
+            <label><input type="radio" class="epic production" id="providence_wa" name="environment" value="https://haikuwa.providence.org/fhirproxy/api/FHIR/R4">Providence Health (WA, MT)</label>
+            <label><input type="radio" class="epic production" id="providence_or" name="environment" value="https://haikuor.providence.org/fhirproxy/api/FHIR/R4">Providence Health (CA, OR)</label>
+            <label><input type="radio" class="epic production" id="providence_ak" name="environment" value="https://haikuak.providence.org/fhirproxy/api/FHIR/R4">Providence Health (AK)</label>
+            <label><input type="radio" class="epic production" id="skagit" name="environment" value="https://epicproxy.et1005.epichosted.com/FHIRProxy/api/FHIR/R4">Skagit Regional Health</label>
+            <label><input type="radio" class="epic production" id="ochin" name="environment" value="https://webprd.ochin.org/prd-fhir/api/FHIR/R4">OCHIN</label>
+            <label><input type="radio" class="epic production" id="multicare" name="environment" value="https://soapprod.multicare.org/FHIRProxy/api/FHIR/R4">MultiCare Heath</label>
+            <label><input type="radio" class="epic production" id="confluence" name="environment" value="https://epicproxy.et0764.epichosted.com/FHIRProxy/api/FHIR/R4">Confluence Health</label>
+            <label><input type="radio" class="epic production" id="other" name="environment" value="">Other FHIR R4 endpoint:<br/>
                 <input type="text" id="fhir-base-url" size="80" placeholder='URL ending in "/FHIR/R4"'/><br/>
                 <span class="note"><a href="https://open.epic.com/MyApps/Endpoints" target="_blank">List of national EPIC production endpoints</a></span>
             </label>
             <h3>Non-Production Endpoints</h3>
             <span class="description">View test patient data using provided credentials</span>
-            <label><input type="radio" class="non-production" id="smit" name="environment" value="https://launch.smarthealthit.org/v/r4/sim/WzMsIiIsIiIsIkFVVE8iLDAsMCwwLCIiLCIiLCIiLCIiLCIiLCIiLCIiLDAsMF0/fhir" checked>SMART Health IT <br/>
+            <label><input type="radio" class="smit non-production" id="smit" name="environment" value="https://launch.smarthealthit.org/v/r4/sim/WzMsIiIsIiIsIkFVVE8iLDAsMCwwLCIiLCIiLCIiLCIiLCIiLCIiLCIiLDAsMF0/fhir" checked>SMART Health IT <br/>
                 <span class="note">Credentials pre-populated for Abdul Koepp</span>
             </label>
-            <label><input type="radio" class="non-production" id="epic" name="environment" value="https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4">EPIC <br/>
+            <label><input type="radio" class="epic non-production" id="epic" name="environment" value="https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4">EPIC <br/>
                 <span class="note">Credentials: fhirdesiree / epicepic1</span><br/>
                 <span class="note">Other EPIC test patient credentials can be found <a href="https://fhir.epic.com/Documentation?docId=testpatients" target="_blank">here</a>.</span>
             </label>
+            <label><input type="radio" class="cerner non-production" id="cerner" name="environment" value="https://fhir-myrecord.cerner.com/r4/ec2458f2-1e24-41c8-b71b-0e701af7583d">Oracle Health (Cerner)</label>
+                <span class="note">Credentials: iqh4smart / Cerner*01</span><br/>
+                <span class="note">Other Cerner test patient credentials can be found <a href="https://docs.google.com/document/u/1/d/e/2PACX-1vQwyX3px4qi5t1O6_El6022zYt4ymKAWCrcgxcX5NvYGUJAkJ4WFwOnLoikow6rEccpFZzDWBdcBqsQ/pub" target="_blank">here</a>.</span>
         </form>
     </div>
     <button id="start-app-button">LAUNCH</button>

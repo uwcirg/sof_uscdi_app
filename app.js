@@ -31,11 +31,19 @@ const patientResourceConfig = {
 
 const patientResourceScope = Object.keys(patientResourceConfig).map(resourceType => `patient/${resourceType}.read`);
 const resourceScope = patientResourceScope.join(" ");
-const nonProductionClientID = '1fb63933-3891-4ac2-a080-e7de0acb6c7f';
-const productionClientID = 'd1bc396c-1b91-4135-bfd7-e028f3eeb43a';
+const clientIDs = {
+    "epic": {
+        "production": "d1bc396c-1b91-4135-bfd7-e028f3eeb43a",
+        "non-production": "1fb63933-3891-4ac2-a080-e7de0acb6c7f"
+    },
+    "cerner": {
+        "production": "0cffd924-9824-4d1d-989e-735833c49c74",
+        "non-production": "0cffd924-9824-4d1d-989e-735833c49c74"
+    }
+}
 const config = {
         // This client ID worked through 2023-04-17, and then I marked the app as ready for production. I think at that point I was assigned new prod & non-prod client ID's...
-        clientId: productionClientID, // I believe clientId is ignored at smit.
+        clientId: null, // Set later. I believe clientId is ignored at smit.
         scope: `openid fhirUser launch/patient ${resourceScope} offline_access`,
         iss: '(populated later)',
         completeInTarget: true,
@@ -63,7 +71,15 @@ $(document).ready(() => {
 function startApp() {
     // At this point, the field has the user's desired host URL.
     const endpointSelection = $('input[type=radio]:checked');
-    config.clientId = endpointSelection.hasClass('production') ? productionClientID : nonProductionClientID;
+    Object.keys(clientIDs).forEach(ehr => {
+        if (endpointSelection.hasClass(ehr)) {
+            if (endpointSelection.hasClass('production')) {
+                config.clientId = clientIDs[ehr]['production'];
+            } else {
+                config.clientId = clientIDs[ehr]['non-production'];
+            }
+        }
+    });
     let valueInput = endpointSelection.attr('id') === "other" ? $('#fhir-base-url') : endpointSelection;
     let inputFhirUrl = valueInput.val().trim();
     if (inputFhirUrl.endsWith('/')) {
