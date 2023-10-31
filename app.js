@@ -43,7 +43,7 @@ const clientIDs = {
 }
 const config = {
         // This client ID worked through 2023-04-17, and then I marked the app as ready for production. I think at that point I was assigned new prod & non-prod client ID's...
-        clientId: null, // Set later. I believe clientId is ignored at smit.
+        clientId: "no client id provided", // Set later. I believe clientId is ignored at smit.
         scope: `openid fhirUser launch/patient ${resourceScope} offline_access`,
         iss: '(populated later)',
         completeInTarget: true,
